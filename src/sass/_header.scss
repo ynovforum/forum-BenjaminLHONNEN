@@ -1,0 +1,16 @@
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  display: block;
+
+  height: $headerHeight;
+  ul {
+    list-style: none;
+    li{
+      display: inline-block;
+    }
+  }
+}

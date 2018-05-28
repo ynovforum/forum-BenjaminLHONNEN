@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title> S'incrire | Forum</title>
+    <link rel="icon" type="image/png" href="assets/img/icon.png"/>
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+</head>
+<body>
+
+<main>
+
+    {% if isAdminCreate == false %}
+        <p class="important"> Création du compte Administrateur </p>
+    {% endif %}
+
+    <form method="post">
+        <input type="text" name="pseudo" required>
+        <input type="email" name="userName" required>
+        <input type="password" name="password" required>
+        <textarea name="bio"></textarea>
+        <input type="file" name="img">
+        <input type="submit" value="S'inscrire">
+    </form>
+
+</main>
+
+</body>
+</html>

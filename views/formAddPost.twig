@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+
+    <form action="/api/post/post" method="post">
+        <input type="text" name="title">
+        <textarea name="content"></textarea>
+        <input type="text" name="category">
+        <input type="submit" value="Envoyer">
+    </form>
+
+{% endblock %}

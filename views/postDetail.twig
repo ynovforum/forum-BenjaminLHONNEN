@@ -1,0 +1,99 @@
+{% extends "base.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+    <p class="muted">{{ post.category }}</p>
+
+    <ul id="app">
+        <li>Comments :</li>
+        <li v-for="comment in comments">
+            <p v-bind:id="'comment-' + comment.id">${ comment.content }</p>
+            <p v-if="comment.user.id === {{ user.id }}">
+                <button v-bind:onclick="'modificationCommentaire(this,' + comment.id + ')'" v-bind:id="'button-' + comment.id"> modifier</button>
+            </p>
+        </li>
+        <li v-if="comments === null">
+            Chargement ...
+        </li>
+        <li v-if="comments !== null && comments.length === 0">
+            Pas encore de commentaire !
+        </li>
+    </ul>
+    <div>
+        <input id="idPost" name="idPost" type="hidden" value="{{ post.id }}">
+        <textarea id="content" name="content"></textarea>
+        <button onclick="sendComment()">Envoyer</button>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        var app;
+        window.onload = function () {
+            console.log("document.onload");
+            app = new Vue({
+                el: '#app',
+                delimiters: ['${', '}'],
+                data: {
+                    comments: null
+                }
+            });
+            getCommentByIdPost({{ post.id }}, function (err, status, data) {
+                app.comments = data;
+            });
+        };
+
+        function refreshComment() {
+            app.comments = null;
+            getCommentByIdPost({{ post.id }}, function (err, status, data) {
+                app.comments = data;
+            });
+        }
+
+        function sendComment() {
+            var obj = {
+                content: document.getElementById("content").value,
+                idPost: document.getElementById("idPost").value,
+            };
+            console.log(obj);
+            postComment(obj, function (err, status, data) {
+                console.log(err, status, data);
+                refreshComment();
+            });
+        }
+
+        var modifying = null;
+
+        function modificationCommentaire(btn, idComment) {
+            if (modifying !== idComment) {
+                if (modifying !== null && modifying !== idComment){
+                    document.getElementById('comment-' + modifying).innerText = document.getElementById("textarea-"+modifying).value;
+                    document.getElementById('button-' + modifying).innerText = "modifier";
+                }
+                var commentElement = document.getElementById('comment-' + idComment);
+                var commentTxt = commentElement.textContent;
+
+                commentElement.innerHTML = "";
+
+                var textArea = document.createElement("textarea");
+                textArea.id = "textarea-" + idComment;
+                textArea.value = commentTxt;
+
+                commentElement.appendChild(textArea);
+                btn.textContent = "Envoyer";
+                modifying = idComment;
+            } else {
+                var obj = {
+                    content:document.getElementById("textarea-"+idComment).value,
+                };
+                updateComment(obj, idComment, function (err,status,data) {
+                    console.log(err,status,data);
+                    refreshComment();
+                });
+                modifying = null;
+            }
+        }
+    </script>
+{% endblock %}

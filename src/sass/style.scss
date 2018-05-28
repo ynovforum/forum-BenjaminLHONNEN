@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+$headerHeight:50px;
+
+$mainPadding:10px;
+
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+body {
+  color: #222222;
+}
+
+body main {
+  width: 90%;
+  margin: $mainPadding + $headerHeight auto;
+}
+
+header{
+  height: $headerHeight;
+}
+
+
+@import "header";

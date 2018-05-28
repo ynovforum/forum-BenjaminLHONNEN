@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <div id="app">
+        <ul v-if="posts">
+            <li><button onclick="refreshLastPost()">refresh</button></li>
+            <li v-for="post in posts">
+                <a v-bind:href="'/postDetail-' + post.id">
+                    <h3>${ post.title }</h3>
+                    <p>${ post.content }</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        var app;
+        window.onload = function () {
+            console.log("document.onload");
+            app = new Vue({
+                el: '#app',
+                delimiters:['${', '}'],
+                data: {
+                    posts: null
+                }
+            });
+
+            getLastPost(function (err,status,data) {
+                if(status === 200){
+                    app.posts = data;
+                }
+            });
+        };
+        function refreshLastPost() {
+            app.posts = null;
+            getLastPost(function (err,status,data) {
+                if(status === 200){
+                    app.posts = data;
+                }
+            });
+        }
+    </script>
+{% endblock %}
