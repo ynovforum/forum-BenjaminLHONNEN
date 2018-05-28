@@ -8,13 +8,13 @@ const session = require('express-session');
 const request = require('request');
 const bcrypt = require('bcrypt');
 
-// bcrypt request express-session cookie-parser passport-local express passport body-parser mysql2 sequalize
+// bcrypt request express-session cookie-parser passport-local express passport body-parser mysql2 sequalize twig
 
 const saltRounds = 12;
 const {db, User} = require('./DB');
 const {COOKIE_SECRET} = require('./const');
 
-app.set('view engine', 'pug');
+app.set('view engine', 'twig');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
