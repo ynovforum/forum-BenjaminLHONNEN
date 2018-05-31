@@ -2,30 +2,74 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title> S'incrire | Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title> S'inscrire | Forum</title>
     <link rel="icon" type="image/png" href="assets/img/icon.png"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-
+    <script src="assets/js/tinymce.min.js"></script>
 </head>
 <body>
 
-<main>
+<main class="m-w-500 m-t-150 brd-r">
+    <div class="bg-gc brd-mc first-child-top-center">
+        <div class="flex flex-c">
+            <img class="img-resp mh-200" src="assets/img/paper_plane.png">
+        </div>
+        <div class="flex flex-c">
+            <h2 class="ligh">
+                Welcome back !
+            </h2>
+        </div>
+    </div>
 
-    {% if isAdminCreate == false %}
-        <p class="important"> Création du compte Administrateur </p>
-    {% endif %}
+    <div class="bg-w brd-mc">
+        <form method="post" enctype="multipart/form-data">
+            <div class="input-field">
+                <label class="muted">Pseudo </label>
+                <input class="full" placeholder="Pseudo" type="text" name="pseudo" required>
+            </div>
+            <div class="input-field">
+                <label class="muted">Email </label>
+                <input class="full" placeholder="Email" type="email" name="userName" required>
+            </div>
+            <div class="input-field">
+                <label class="muted">Mot de Passe </label>
+                <input class="full" placeholder="Mot de Passe" type="password" name="password" required>
+            </div>
+            <div class="input-field">
+                <label class="muted">Bio </label>
+                <textarea name="bio"></textarea>
+            </div>
+            <div class="input-field">
+                <label class="muted">Image </label>
+                <input id="img-user" type="file" name="fileUploaded">
+                <label for="img-user" class="flex-2 flex-c flex-m" id="label-img-user">
+                    <p>Importer une image ...</p>
+                </label>
+            </div>
+            <div class="input-field">
+                <button class="btn blue">
+                    S'inscrire
+                </button>
+            </div>
+        </form>
+    </div>
 
-    <form method="post">
-        <input type="text" name="pseudo" required>
-        <input type="email" name="userName" required>
-        <input type="password" name="password" required>
-        <textarea name="bio"></textarea>
-        <input type="file" name="img">
-        <input type="submit" value="S'inscrire">
-    </form>
-
+    <a href="/login">Se connecter</a>
 </main>
 
+<script>
+    var fileInput, labelFileInput;
+    window.onload = function () {
+        tinymce.init({selector: 'textarea'});
+
+        fileInput = document.getElementById("img-user");
+        labelFileInput = document.getElementById("label-img-user");
+        fileInput.addEventListener("change", function (event) {
+            labelFileInput.innerHTML = "<p>Importer une image ...\n" + this.value + "</p>";
+        });
+    }
+</script>
 </body>
 </html>

@@ -3,29 +3,96 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.content }}</p>
-    <p class="muted">{{ post.category }}</p>
+    <div class="flex-75-25 p-10 m-10">
+        <div class="bg-w m-10 p-10 brd-r brd-mc">
+            <div class="flex-profile m-10">
+                <div>
+                    <img src="{{ post.user.imgSrc }}" class="img-resp img-profile-100w-100h">
+                </div>
+                <div class="p-10">
+                    <h3 class="no-m no-p">{{ post.title }}</h3>
+                    <p class="no-m no-p">{{ post.user.pseudo }} | {{ post.prettyDate }}</p>
+                </div>
+            </div>
+            <div class="flex-25-75 brd-bot-mc">
+                <div class="p-10">
+                    <img src="{{ post.imgSrc }}" class="img-resp">
+                </div>
+                <div class="p-10 postContent">
+                    <p>{{ post.content }}</p>
+                    <p class="muted">{{ post.category }}</p>
+                </div>
+            </div>
 
-    <ul id="app">
-        <li>Comments :</li>
-        <li v-for="comment in comments">
-            <p v-bind:id="'comment-' + comment.id">${ comment.content }</p>
-            <p v-if="comment.user.id === {{ user.id }}">
-                <button v-bind:onclick="'modificationCommentaire(this,' + comment.id + ')'" v-bind:id="'button-' + comment.id"> modifier</button>
-            </p>
-        </li>
-        <li v-if="comments === null">
-            Chargement ...
-        </li>
-        <li v-if="comments !== null && comments.length === 0">
-            Pas encore de commentaire !
-        </li>
-    </ul>
-    <div>
-        <input id="idPost" name="idPost" type="hidden" value="{{ post.id }}">
-        <textarea id="content" name="content"></textarea>
-        <button onclick="sendComment()">Envoyer</button>
+            <ul id="app" class="postComments p-10 m-10">
+                <li v-for="comment in comments">
+                    <div class="flex-profile">
+                        <div class="m-10 flex flex-c">
+                            <img v-bind:src="comment.user.imgSrc" class="img-resp img-profile-100w-100h">
+                        </div>
+                        <div class="m-10">
+                            <p>
+                                ${ comment.user.pseudo } | {{ comment.prettyDate }}
+                            </p>
+                            <p class="no-p no-m comment" v-bind:id="'comment-' + comment.id"
+                               v-html="comment.content"></p>
+                            <p class="no-m no-p" v-if="comment.user.id === {{ user.id }}">
+                                <button class="btn blue"
+                                        v-bind:onclick="'modificationCommentaire(this,' + comment.id + ')'"
+                                        v-bind:id="'button-' + comment.id"> modifier
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li v-if="comments === null">
+                    Chargement ...
+                </li>
+                <li v-if="comments !== null && comments.length === 0">
+                    Pas encore de commentaire !
+                </li>
+            </ul>
+            <div class="p-10 m-10">
+                <input id="idPost" name="idPost" type="hidden" value="{{ post.id }}">
+                <textarea id="content" name="content"></textarea>
+                <button class="btn blue" onclick="sendComment()">Envoyer</button>
+            </div>
+        </div>
+        <div>
+            <div class="m-10">
+                <div class="brd-mc">
+                    <div class="bg-w no-m no-p brd-r-top">
+                        <h2 class="p-10 no-m">Titre</h2>
+                        <p class="p-10 no-m brd-bot-mc">
+                            txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt
+                            txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt
+                            txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt
+                        </p>
+                    </div>
+                    <div class="bg-w no-m no-p">
+                        <h2 class="p-10 no-m">Titre</h2>
+                        <p class="p-10 no-m">
+                            txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt
+                            txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt
+                            txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt txt
+                        </p>
+                    </div>
+                    <div class="bg-gc no-m p-10 brd-r-bot brd-top-mc txt-a-c">
+                        <a href="#"> Lien </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="m-10">
+                <div class="brd-r bg-w">
+                    <div class="p-10">
+                        <img class="img-resp" src="/assets/img/postEx.png">
+                        <h2 class="no-p no-m">Article </h2>
+                        <p class="muted no-p no-m">date </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block script %}
@@ -33,6 +100,7 @@
         var app;
         window.onload = function () {
             console.log("document.onload");
+            tinymce.init({selector: 'textarea'});
             app = new Vue({
                 el: '#app',
                 delimiters: ['${', '}'],
@@ -41,6 +109,9 @@
                 }
             });
             getCommentByIdPost({{ post.id }}, function (err, status, data) {
+                for(var y=0;y < data.length;y++){
+                    data[y]['prettyDate'] = prettyDate(data[y]['createdAt']);
+                }
                 app.comments = data;
             });
         };
@@ -48,13 +119,16 @@
         function refreshComment() {
             app.comments = null;
             getCommentByIdPost({{ post.id }}, function (err, status, data) {
+                for(var y=0;y < data.length;y++){
+                    data[y]['prettyDate'] = prettyDate(data[y]['createdAt']);
+                }
                 app.comments = data;
             });
         }
 
         function sendComment() {
             var obj = {
-                content: document.getElementById("content").value,
+                content: tinyMCE.get('content').getContent(),
                 idPost: document.getElementById("idPost").value,
             };
             console.log(obj);
@@ -68,8 +142,8 @@
 
         function modificationCommentaire(btn, idComment) {
             if (modifying !== idComment) {
-                if (modifying !== null && modifying !== idComment){
-                    document.getElementById('comment-' + modifying).innerText = document.getElementById("textarea-"+modifying).value;
+                if (modifying !== null && modifying !== idComment) {
+                    document.getElementById('comment-' + modifying).innerText = document.getElementById("textarea-" + modifying).value;
                     document.getElementById('button-' + modifying).innerText = "modifier";
                 }
                 var commentElement = document.getElementById('comment-' + idComment);
@@ -83,13 +157,14 @@
 
                 commentElement.appendChild(textArea);
                 btn.textContent = "Envoyer";
+                tinymce.init({selector: 'textarea'});
                 modifying = idComment;
             } else {
                 var obj = {
-                    content:document.getElementById("textarea-"+idComment).value,
+                    content: tinyMCE.get(("textarea-" + idComment)).getContent(),
                 };
-                updateComment(obj, idComment, function (err,status,data) {
-                    console.log(err,status,data);
+                updateComment(obj, idComment, function (err, status, data) {
+                    console.log(err, status, data);
                     refreshComment();
                 });
                 modifying = null;

@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600');
+
+*{
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1,h2,h3,p{
+  padding: $mainPadding;
+}
+
+h1{
+  font-family: 'Source Sans Pro Semibold', sans-serif;
+  font-size: 32px;
+  line-height: 44px;
+  color: #393C3E;
+}
+h2{
+  font-size: 22px;
+  line-height: 32px;
+  color: #393C3E;
+  &.ligh{
+    color: #71787E;
+  }
+}
+h3{
+  font-size: 20px;
+  line-height: 28px;
+  color: #393C3E;
+}
+p,button,input{
+  font-size: 16px;
+}
+p{
+  line-height: 24px;
+  color: #71787E;
+}
+.muted{
+  color: #71787E;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+a{
+  font-family: 'Source Sans Pro Semibold', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #00AEEF;
+  transition: color 0.3s ease-in-out;
+
+  &.no-style{
+    text-decoration: none;
+  }
+}
+a:visited{
+  color: #00AEEF;
+}
+a:hover{
+  color: #006ba5;
+}

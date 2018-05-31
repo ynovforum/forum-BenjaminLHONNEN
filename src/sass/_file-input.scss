@@ -1,0 +1,36 @@
+.input-field input {
+  &[type="file"]{
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: -100%;
+  }
+  &[type="file"] + label *{
+    white-space: pre;
+  }
+  &[type="file"] + label *:first-child{
+    position: relative;
+    padding-left: 3.5em;
+    min-height: 5em;
+  }
+  &[type="file"] + label *:first-child::before{
+    content: 'cloud_upload';
+    font-size: 3em !important;
+    font-family: 'Material Icons', sans-serif;
+    line-height: 1em;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  &[type="file"] + label{
+    cursor: pointer;
+    padding: 10px;
+    color: #354052;
+    border: 1px solid #DFE3E9;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+    border-radius: 3px;
+  }
+
+}

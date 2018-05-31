@@ -1,0 +1,12 @@
+.first-child-top-center{
+  position: relative;
+  display: block;
+  padding-top: 100px;
+}
+.first-child-top-center > *:first-child{
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  height: 200px;
+}

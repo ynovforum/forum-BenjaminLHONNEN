@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title> S'incrire | Forum</title>
+    <title> Connexion | Forum</title>
     <link rel="icon" type="image/png" href="assets/img/icon.png"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -10,12 +10,53 @@
 </head>
 <body>
 
-<main>
-    <form method="post">
-        <input type="text" name="username">
-        <input type="password" name="password">
-        <input type="submit" value="Se Connecter">
-    </form>
+<main class="m-w-500 m-t-150 brd-r">
+    <div class="bg-gc brd-mc first-child-top-center">
+        <div class="flex flex-c">
+            <img class="img-resp mh-200" src="assets/img/paper_plane.png">
+        </div>
+        <div class="flex flex-c">
+            <h2 class="ligh">
+                Welcome back !
+            </h2>
+        </div>
+    </div>
+    <div class="bg-w brd-mc">
+        <form method="post">
+            <div class="input-field m-10">
+                <label class="muted">Email </label>
+                <input class="full" placeholder="Email" type="text" name="username">
+            </div>
+            <div class="input-field m-10">
+                <label class="muted">Mot de Passe </label>
+                <input class="full" placeholder="Mot de Passe" type="password" name="password">
+            </div>
+            <div class="input-field m-10">
+                <button class="btn green square full">
+                    Se Connecter
+                </button>
+            </div>
+        </form>
+        <div class="flex-3 flex-c flex-m">
+            <div class="ligne"></div>
+            <p class="txt-a-c">Login via social networks</p>
+            <div class="ligne"></div>
+        </div>
+        <div class="flex-4">
+            <button class="m-10 no-p circle">
+                <img class="img-resp" src="assets/img/twitter.png">
+            </button>
+            <button class="m-10 no-p circle">
+                <img class="img-resp" src="assets/img/facebook.png">
+            </button>
+            <button class="m-10 no-p circle">
+                <img class="img-resp" src="assets/img/pinterest.png">
+            </button>
+            <button class="m-10 no-p circle">
+                <img class="img-resp" src="assets/img/dribbble.png">
+            </button>
+        </div>
+    </div>
     <a href="/register">S'inscrire</a>
 </main>
 

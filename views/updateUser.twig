@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block title %}Update User {% endblock %}
+
+{% block content %}
+
+    <div class="bg-w brd-mc">
+        <form method="post">
+            <div class="input-field">
+                <label class="muted">Pseudo </label>
+                <input class="full" placeholder="Pseudo" type="text" name="pseudo" required
+                       value="{{ userUpdate.pseudo }}">
+            </div>
+            <div class="input-field">
+                <label class="muted">Email </label>
+                <input class="full" placeholder="Email" type="email" name="userName" required
+                       value="{{ userUpdate.email }}">
+            </div>
+            <div class="input-field">
+                <label class="muted">Mot de Passe </label>
+                <input class="full" placeholder="Mot de Passe" type="password" name="password" required
+                       value="">
+            </div>
+            <div class="input-field">
+                <label class="muted">Bio </label>
+                <textarea name="bio">{{ userUpdate.bio }}</textarea>
+            </div>
+            <div class="input-field">
+                <p class="muted">Image </p>
+                <img src="/{{ userUpdate.imgSrc }}" class="img-resp img-profile-100w-100h">
+            </div>
+            <div class="input-field">
+                <button class="btn blue">
+                    modifier
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        window.onload = function () {
+            tinymce.init({selector: 'textarea'});
+        }
+    </script>
+{% endblock %}

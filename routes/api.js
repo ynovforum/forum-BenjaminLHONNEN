@@ -52,6 +52,23 @@ router.post('/post/post', (req, res) => {
         )
 });
 
+router.post('/post/postResolved-:idPost', (req, res) => {
+    Post
+        .sync()
+        .then(()=>{
+            Post.update({
+                resolved:true
+            },{
+                where:{
+                    id:req.params.idPost
+                }
+            })
+        })
+        .then(
+            res.sendStatus(200)
+        )
+});
+
 
 router.get('/get/comment-:idPost', (req, res) => {
     Comment
@@ -80,6 +97,7 @@ router.post('/add/comment', (req, res) => {
                 idUser:req.user.id,
                 idPost:req.body.idPost,
                 content:req.body.content,
+                resolved:false,
             });
         }).then((comment)=>{
             res.sendStatus(200);

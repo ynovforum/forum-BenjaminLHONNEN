@@ -1,6 +1,8 @@
 const mysql2 = require('mysql2');
 const Sequelize = require('sequelize');
+const fs = require('fs');
 
+let isAdminCreate = true;
 
 const db = new Sequelize('forum', 'root', '', {
     host: 'localhost',
@@ -10,7 +12,7 @@ const db = new Sequelize('forum', 'root', '', {
 const User = db.define('user', {
     mail: {type: Sequelize.STRING},
     password: {type: Sequelize.STRING},
-    userName: {type: Sequelize.STRING},
+    pseudo: {type: Sequelize.STRING},
     role: {type: Sequelize.STRING},
     imgSrc: {type: Sequelize.STRING},
     bio: {type: Sequelize.TEXT},
@@ -18,14 +20,15 @@ const User = db.define('user', {
 
 const Post = db.define('post', {
     title: {type: Sequelize.STRING},
-    content: {type: Sequelize.STRING},
+    content: {type: Sequelize.TEXT},
     category: {type: Sequelize.STRING},
     imgSrc: {type: Sequelize.STRING},
     idUser: {type: Sequelize.INTEGER},
+    resolved: {type: Sequelize.BOOLEAN},
 });
 
 const Comment = db.define('comment', {
-    content: {type: Sequelize.STRING},
+    content: {type: Sequelize.TEXT},
     idPost: {type: Sequelize.INTEGER},
     idUser: {type: Sequelize.INTEGER},
 });

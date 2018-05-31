@@ -1,0 +1,109 @@
+
+body main {
+  width: 90%;
+  margin: $mainPadding + $headerHeight auto;
+}
+
+.tableLink{
+  text-decoration: none;
+  font-size: 32px;
+  line-height: 44px;
+  color: #393C3E !important;
+}
+
+.txt-a-c{
+  text-align: center;
+}
+
+.txt-a-r{
+  text-align: right;
+}
+
+.txt-a-l{
+  text-align: left;
+}
+
+.txt-pre{
+  white-space: pre;
+}
+
+.txt-big{
+  font-size: 3em !important;
+}
+
+.ligne{
+  height: 2px;
+  background-color: $mc;
+}
+
+.bg-w{
+  background-color: $w;
+}
+.bg-lw{
+  background-color: $lw;
+}
+.bg-gc{
+  background-color: $grischelou;
+}
+
+.brd-mc{
+  border: 1px solid $brd-color;
+}
+.brd-bot-mc{
+  border-bottom: 1px solid $brd-color;
+}
+.brd-top-mc{
+  border-top: 1px solid $brd-color;
+}
+
+.transition{
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+.m-10{
+  margin: 10px;
+}
+.p-10{
+  padding: 10px;
+}
+.m-5{
+  margin: 5px;
+}
+.p-5{
+  padding: 5px;
+}
+
+.no-p{
+  padding: 0;
+}
+.no-m{
+  margin: 0;
+}
+
+.m-t-150{
+  margin-top: 150px;
+}
+
+.brd-r{
+  border-radius: $brd-rad;
+}
+
+.brd-r-top{
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.brd-r-bot{
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.mh-200{
+  max-height: 200px;
+}
+.m-w-500{
+  max-width: 500px;
+}
+.m-w-250{
+  max-width: 250px;
+}

@@ -1,0 +1,30 @@
+.listPost{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  li{
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #EFF3F6;
+    padding: $mainPadding;
+  }
+}
+
+.postContent p{
+  margin: 5px;
+  padding: 0;
+}
+.postComments{
+  list-style: none;
+}
+.postComments > li{
+  padding-left: 25px;
+  border-bottom: 1px solid $brd-color;
+}
+.postComments > li:last-child{
+  border: none;
+}
+
+.comment p{
+  margin: 5px;
+  padding: 0;
+}

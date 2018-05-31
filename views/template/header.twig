@@ -1,13 +1,19 @@
 <header>
-
-    <ul class="md lg">
-
-    </ul>
-
-    <ul class="sm">
-        <li>{{user.role}}</li>
+    <ul class="flex flex-c flex-m">
         <li><a href="/">Accueil</a></li>
+        <li>
+            <a class="flex flex-c flex-m" href="#">
+                <img class="img-profile" src="/{{ user.imgSrc }}">
+                <span class="m-10">{{ user.pseudo }}</span>
+            </a>
+        </li>
         <li><a href="/disconnect">Se Deconnecter</a></li>
-    </ul>
 
+        {% if user.role == "admin" %}
+            <li>
+                <a href="/admin">dashboard</a>
+            </li>
+        {% endif %}
+
+    </ul>
 </header>

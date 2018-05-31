@@ -1,0 +1,36 @@
+.userList > li{
+  border-radius: $brd-rad;
+}
+.userList > li:nth-child(1n){
+  border-left: 4px solid $ul-blue;
+}
+.userList > li:nth-child(2n){
+  border-left: 4px solid $ul-red;
+}
+.userList > li:nth-child(3n){
+  border-left: 4px solid $ul-green;
+}
+.userList > li:nth-child(4n){
+  border-left: 4px solid $ul-yellow;
+}
+
+.userPostList,.userList{
+  list-style: none;
+}
+
+.userPostList li{
+  border-bottom: solid 1px $brd-color;
+}
+.userPostList li:last-child{
+  border-bottom: none;
+}
+
+.userPostList li a,.userList li a{
+  text-decoration: none;
+}
+.userPostList li{
+  border-bottom: 1px solid $brd-color;
+}
+.userPostList li:last-child{
+  border-bottom: none;
+}

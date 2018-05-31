@@ -1,25 +1,34 @@
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+@import "normalize";
+
+@import "colors";
 
 $headerHeight:50px;
 
 $mainPadding:10px;
+$mainMargin:10px;
 
-* {
-  font-family: 'Ubuntu', sans-serif;
+$smallPadding:5px;
+$smallMargin:5px;
+$brd-rad:3px;
+
+
+*{
+  box-sizing: border-box;
+}
+html{
+  background-color: $mc;
 }
 
-body {
-  color: #222222;
-}
-
-body main {
-  width: 90%;
-  margin: $mainPadding + $headerHeight auto;
-}
-
-header{
-  height: $headerHeight;
-}
-
-
+@import "usefull";
+@import "typo";
+@import "input";
+@import "button";
+@import "anim";
+@import "checkbox";
 @import "header";
+@import "listPost";
+@import "flex";
+@import "file-input";
+@import "login";
+@import "image";
+@import "ul";

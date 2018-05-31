@@ -5,10 +5,31 @@
 {% block content %}
 
     <form action="/api/post/post" method="post">
-        <input type="text" name="title">
-        <textarea name="content"></textarea>
-        <input type="text" name="category">
-        <input type="submit" value="Envoyer">
+
+        <div class="input-field">
+            <label for="title">Title : </label>
+            <input class="full" type="text" name="title" id="title">
+        </div>
+
+        <div class="input-field">
+            <textarea name="content"></textarea>
+        </div>
+
+        <div class="input-field">
+            <label for="category">Category : </label>
+            <input class="full" id="category" type="text" name="category">
+        </div>
+
+        <div class="input-field flex flex-m flex-c">
+            <button class="btn blue">Envoyer</button>
+        </div>
     </form>
 
+{% endblock %}
+{% block script %}
+    <script>
+        window.onload = function () {
+            tinymce.init({selector: 'textarea'});
+        }
+    </script>
 {% endblock %}

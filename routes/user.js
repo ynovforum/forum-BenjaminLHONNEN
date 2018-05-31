@@ -1,19 +1,17 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-let {isAdminCreate} = require('../params');
 const fs = require('fs');
-const {db, User, Post, Comment} = require('../DB');
+let {db, User, Post, Comment} = require('../DB');
 const passport = require('passport');
 const {saltRounds} = require('../const');
+const formidable = require('formidable');
 
 
 router.get('/addPost', (req, res) => {
     if (req.user !== undefined && req.user !== null) {
         res.render('formAddPost', {user: req.user});
-    } else if (isAdminCreate) {
-        res.redirect("/login");
     } else {
-        res.redirect("/register");
+        res.redirect("/login");
     }
 });
 router.get('/postDetail-:idPost', (req, res) => {
@@ -32,22 +30,19 @@ router.get('/postDetail-:idPost', (req, res) => {
                 });
             })
             .then((post) => {
-                res.render('postDetail', {post,user: req.user});
+                post['prettyDate'] = prettyDate(post['createdAt']);
+                res.render('postDetail', {post, user: req.user});
             });
-    } else if (isAdminCreate) {
-        res.redirect("/login");
     } else {
-        res.redirect("/register");
+        res.redirect("/login");
     }
 });
 
 router.get('/', (req, res) => {
     if (req.user !== undefined && req.user !== null) {
         res.render('index', {user: req.user});
-    } else if (isAdminCreate) {
-        res.redirect("/login");
     } else {
-        res.redirect("/register");
+        res.redirect("/login");
     }
 });
 
@@ -57,76 +52,116 @@ router.post('/login', passport.authenticate('local', {
 }));
 
 router.get('/login', (req, res) => {
-    if (isAdminCreate) {
-        res.render('login');
-    } else {
-        res.redirect("/register");
-    }
+    res.render('login');
+
 });
 
 router.get('/register', (req, res) => {
-    // Render the login page
-    res.render('register', {isAdminCreate});
+    res.render('register');
 });
 router.post('/register', (req, res) => {
-    bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-        User
-            .sync()
-            .then(() => {
-                return User.find({
-                    where: {
-                        mail: req.body.email,
-                    }
-                })
-            })
-            .then((user) => {
-                if (user === null || user === undefined) {
-                    let role = "default";
-                    if (isAdminCreate === false) {
-                        role = "admin";
-                    }
-                    return User.create({
-                        mail: req.body.userName,
-                        password: hash,
-                        pseudo: req.body.pseudo,
-                        bio: req.body.bio,
-                        role: role,
-                        imgSrc: "/assets/user-img/default.png",
-                    });
+    User
+        .sync()
+        .then(() => {
+            return User.find({
+                where: {
+                    mail: req.body.email,
                 }
             })
-            .then((user) => {
-                user = user.dataValues;
-                console.error(user);
-                req.login(user, function (err) {
-                    if (err) {
-                        console.error(err);
-                        res.redirect('/register');
-                    } else {
-                        if (isAdminCreate === false) {
-                            isAdminCreate = true;
-                            fs.writeFile('../params.js', "const isAdminCreate = true;\n" +
-                                "module.exports = {\n" +
-                                "    isAdminCreate: isAdminCreate,\n" +
-                                "};",
-                                function (err) {
-                                    if (err) throw err;
-                                    console.log('It\'s saved!');
-                                });
+        })
+        .then((user) => {
+            if (user === null || user === undefined) {
+                User
+                    .count()
+                    .then((count) => {
+                        let role = "default";
+                        if (count === 0) {
+                            role = "admin";
                         }
-                        res.redirect('/');
-                    }
-                });
-            })
-            .catch(() => {
-                res.send(500);
-            });
-    });
+                        let form = new formidable.IncomingForm();
+                        //Formidable uploads to operating systems tmp dir by default
+                        form.uploadDir = "./tmp";       //set upload directory
+                        form.keepExtensions = true;     //keep file extension
+
+                        form.parse(req, function (err, fields, files) {
+                            console.log(fields);
+                            console.log("form.bytesReceived");
+                            //TESTING
+                            console.log("file size: " + JSON.stringify(files.fileUploaded.size));
+                            console.log("file path: " + JSON.stringify(files.fileUploaded.path));
+                            console.log("file name: " + JSON.stringify(files.fileUploaded.name));
+                            console.log("file type: " + JSON.stringify(files.fileUploaded.type));
+                            console.log("astModifiedDate: " + JSON.stringify(files.fileUploaded.lastModifiedDate));
+
+                            //Formidable changes the name of the uploaded file
+                            //Rename the file to its original name
+                            var timestamp = Date.now();
+                            fs.rename(files.fileUploaded.path, './public/assets/upload/img/' + timestamp + ".png", function (err) {
+                                if (err)
+                                    throw err;
+                                console.log('renamed complete');
+                            });
+                            bcrypt.hash(fields.password, saltRounds, function (err, hash) {
+                                User
+                                    .sync()
+                                    .then(() => {
+                                        return User.create({
+                                            mail: fields.userName,
+                                            password: hash,
+                                            pseudo: fields.pseudo,
+                                            bio: fields.bio,
+                                            role: role,
+                                            imgSrc: './assets/upload/img/' + timestamp + '.png',
+                                        })
+                                    })
+                                    .then((user) => {
+                                        req.login(user, function (err) {
+                                            if (err) {
+                                                console.error(err);
+                                                res.redirect('/register');
+                                            } else {
+
+                                                res.redirect('/');
+                                            }
+                                        });
+                                    });
+
+                            });
+                        });
+                    });
+            }
+        })
+        .catch(() => {
+            res.send(500);
+        });
 });
 
 router.get('/disconnect', (req, res) => {
     req.user = null;
     res.redirect('login');
 });
+
+
+function prettyDate(time) {
+    var date = new Date(time),
+        diff = (((new Date()).getTime() - date.getTime()) / 1000),
+        day_diff = Math.floor(diff / 86400),
+        month_diff = Math.floor(diff / (86400 * 31));
+
+    if (isNaN(day_diff) || day_diff < 0)
+        return;
+
+    return day_diff == 0 && (
+        (diff < 60 && month_diff === 0) && "à l'instant" ||
+        (diff < 120 && month_diff === 0) && "Il y a 1 minute" ||
+        (diff < 3600 && month_diff === 0) && "Il y a " + Math.floor(diff / 60) + " minutes" ||
+        (diff < 7200 && month_diff === 0) && "Il y a 1 heure" ||
+        (diff < 86400 && month_diff === 0) && "Il y a " + Math.floor(diff / 3600) + " heures") ||
+        (day_diff === 1 && month_diff === 0) && "Hier " ||
+        (day_diff < 7  && month_diff === 0) && "Il y a " + day_diff + " jours" ||
+        (day_diff < 31 && month_diff === 0) && "Il y a " + Math.ceil(day_diff / 7) + " semaines" ||
+        month_diff === 1 && "1 mois " ||
+        month_diff > 0 && "Il y a " + month_diff + " mois";
+}
 
 module.exports = router;

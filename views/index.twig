@@ -3,16 +3,86 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-    <div id="app">
-        <ul v-if="posts">
-            <li><button onclick="refreshLastPost()">refresh</button></li>
-            <li v-for="post in posts">
-                <a v-bind:href="'/postDetail-' + post.id">
-                    <h3>${ post.title }</h3>
-                    <p>${ post.content }</p>
-                </a>
-            </li>
-        </ul>
+    <div class="flex-25-75">
+        <div class="m-10 p-10">
+            <h1>Filtres : </h1>
+            <ul>
+                <li> Filtre 1</li>
+                <li> Filtre 2</li>
+                <li> Filtre 3</li>
+                <li> Filtre 4</li>
+            </ul>
+        </div>
+        <div id="app">
+            <h2 class="no-m m-10"> Les 2 dernières questions : </h2>
+            <div class="flex-2 flex-c md-flex-1 sm-flex-1">
+                <div class="p-10 m-10 bg-w">
+                    <div>
+                        <img class="img-resp" src="assets/img/postEx.png">
+                    </div>
+                    <div>
+                        <div class="flex-2">
+                            <div>
+                                <h1 class="no-m">TITRE</h1>
+                                <p class="muted no-m">DATE</p>
+                            </div>
+                            <div class="flex flex-c flex-m">
+                                <button class="btn green square"> WHAT ??</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-10 m-10 bg-w">
+                    <div>
+                        <img class="img-resp" src="assets/img/postEx.png">
+                    </div>
+                    <div>
+                        <div class="flex-2">
+                            <div>
+                                <h1 class="no-m">TITRE</h1>
+                                <p class="muted no-m">DATE</p>
+                            </div>
+                            <div class="flex flex-c flex-m">
+                                <button class="btn green square"> WHAT ??</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-3 bg-lw brd-mc">
+                <p>
+                    Question
+                </p>
+                <p>
+                    Date
+                </p>
+                <div class="flex-2">
+                    <p>
+                        Etat
+                    </p>
+                    <div class="flex-2 flex-r flex-m">
+                        <button onclick="refreshLastPost()" class="tableLink">
+                            <i class="material-icons">
+                                refresh
+                            </i>
+                        </button>
+                        <a href="/addPost" class="tableLink">
+                            +
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="listPost brd-mc" v-if="posts">
+                <li v-for="post in posts">
+                    <a class="no-style flex-3" v-bind:href="'/postDetail-' + post.id">
+                        <h3>${ post.title }</h3>
+                        <h3>${ post.prettyDate }</h3>
+                        <h3>${ post.resolved }</h3>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 {% endblock %}
 {% block script %}
@@ -22,22 +92,41 @@
             console.log("document.onload");
             app = new Vue({
                 el: '#app',
-                delimiters:['${', '}'],
+                delimiters: ['${', '}'],
                 data: {
                     posts: null
                 }
             });
 
-            getLastPost(function (err,status,data) {
-                if(status === 200){
+            getLastPost(function (err, status, data) {
+                if (status === 200) {
+                    data.forEach(function (item, index, array) {
+                        console.log(prettyDate(item.createdAt));
+                        data[index]['prettyDate'] = prettyDate(item.createdAt);
+                        if (item.resolved) {
+                            data[index]['resolved'] = "Résolu";
+                        } else {
+                            data[index]['resolved'] = "En Attente";
+                        }
+                    });
                     app.posts = data;
                 }
             });
         };
+
         function refreshLastPost() {
             app.posts = null;
-            getLastPost(function (err,status,data) {
-                if(status === 200){
+            getLastPost(function (err, status, data) {
+                if (status === 200) {
+                    data.forEach(function (item, index, array) {
+                        console.log(prettyDate(item.createdAt));
+                        data[index]['prettyDate'] = prettyDate(item.createdAt);
+                        if (item.resolved) {
+                            data[index]['resolved'] = "Résolu";
+                        } else {
+                            data[index]['resolved'] = "En Attente";
+                        }
+                    });
                     app.posts = data;
                 }
             });

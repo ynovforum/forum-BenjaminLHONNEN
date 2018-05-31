@@ -1,0 +1,64 @@
+{% extends "base.twig" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Users : </h1>
+    <ul class="userList">
+        {% for item in users %}
+            <li class="bg-w m-10">
+                <div class="flex-profile-50 p-10">
+                    <div class="p-10">
+                        <img src="/{{ item.imgSrc }}" class="img-resp img-profile-50w-50h">
+                    </div>
+                    <div>
+                        <h1 class="no-p no-m">{{ item.pseudo }}</h1>
+                        <p class="muted no-p no-m">
+                            {{ item.prettyDate }}
+                        </p>
+                        <a href="./admin/updateUser-{{ item.id }}"> Modifier </a>
+                    </div>
+                </div>
+                <ul class="userPostList no-m no-p">
+                    <li>
+                        <div class="flex-4 bg-lw brd-mc">
+                            <p class="p-10 no-m">
+                                Question
+                            </p>
+                            <p class="p-10 no-m">
+                                Date
+                            </p>
+                            <p class="p-10 no-m">
+                                Etat
+                            </p>
+                            <p class="p-10 no-m">
+
+                            </p>
+                        </div>
+                    </li>
+
+                    {% for post in item.posts %}
+                        <li class="bg-w">
+                            <div class="flex-4">
+                                <p class="p-10 no-m">
+                                    {{ post.title }}
+                                </p>
+                                <p class="p-10 no-m">
+                                    {{ post.prettyDate }}
+                                </p>
+                                <p class="p-10 no-m">
+                                    {{ post.resolved }}
+                                </p>
+                                <p class="p-10 no-m">
+                                    <a href="#">Modifier</a>
+                                </p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+{% block script %}
+{% endblock %}

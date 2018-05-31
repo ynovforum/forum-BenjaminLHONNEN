@@ -13,8 +13,7 @@ const session = require('express-session');
 
 const request = require('request');
 
-let {isAdminCreate} = require('./params');
-const {db, User} = require('./DB');
+let {db, User} = require('./DB');
 const {COOKIE_SECRET} = require('./const');
 
 
@@ -72,7 +71,6 @@ passport.use(new LocalStrategy((mail, password, done) => {
                 });
             }
         })
-        // If an error occured, report it
         .catch(done);
 }));
 

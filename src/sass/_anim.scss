@@ -1,0 +1,57 @@
+.square{
+  position: relative;
+  &:active::after {
+    padding: 0;
+    margin: 0;
+    opacity: 0.8;
+    transition: 0s;
+    left: 50%;
+    right: 50%;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+  }
+  &::after {
+    content: "";
+    background: #FFFFFF;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -10%;
+    right: -10%;
+    opacity: 0;
+    transition: all 0.5s
+  }
+}
+.circle{
+  position: relative;
+  &:active::after {
+    padding: 0;
+    margin: 0;
+    opacity: 0.8;
+    transition: 0s;
+    left: 50%;
+    right: 50%;
+    top: 50%;
+    bottom: 50%;
+    height: auto;
+    width: auto;
+    visibility: visible;
+  }
+  &::after {
+    content: "";
+    background: #FFFFFF;
+    display: block;
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    left: -20%;
+    right: -20%;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 100%;
+    transition: all 0.5s
+  }
+}

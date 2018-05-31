@@ -1,0 +1,54 @@
+{% extends "base.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>TEST</h1>
+        <h2>TEST</h2>
+        <h3>TEST</h3>
+        <p>TEST</p>
+        <footer><p>TEST</p></footer>
+        <a href="#">TEST</a>
+
+        <div class="input-field">
+            <input placeholder="test">
+        </div>
+        <div class="input-field success">
+            <input placeholder="test">
+        </div>
+        <div class="input-field error">
+            <input placeholder="test">
+        </div>
+        <button class="btn blue square">gogo</button>
+        <button class="btn green square full">gogo</button>
+        <div class="input-field">
+            <select>
+                <option disabled selected value> -- select an option -- </option>
+                <option>test</option>
+                <option>test 1</option>
+                <option>test 2</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <select>
+                <option disabled selected value> -- select an option -- </option>
+                <option>test</option>
+                <option>test 1</option>
+                <option>test 2</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <input type="checkbox" id="cb1" checked><label for="cb1">Choix</label>
+        </div>
+        <div class="input-field">
+            <input type="checkbox" id="cb2"><label for="cb2">Choix</label>
+        </div>
+        <div class="input-field">
+            <input type="checkbox" id="cb3" disabled><label for="cb3">Choix</label>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}
