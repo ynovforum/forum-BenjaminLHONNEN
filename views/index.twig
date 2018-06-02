@@ -7,81 +7,86 @@
         <div class="m-10 p-10">
             <h1>Filtres : </h1>
             <ul>
-                <li> Filtre 1</li>
-                <li> Filtre 2</li>
-                <li> Filtre 3</li>
-                <li> Filtre 4</li>
+                <li>
+                    <button onclick="refreshLastPost()">Toute Les Questions</button>
+                </li>
+                <li>
+                    <button onclick="refreshLastPostWithFiltre('where=open')">Questions En Attente</button>
+                </li>
+                <li>
+                    <button onclick="refreshLastPostWithFiltre('where=close')">Questions Résolues</button>
+                </li>
             </ul>
         </div>
         <div id="app">
             <h2 class="no-m m-10"> Les 2 dernières questions : </h2>
             <div class="flex-2 flex-c md-flex-1 sm-flex-1">
-                <div class="p-10 m-10 bg-w">
-                    <div>
-                        <img class="img-resp" src="assets/img/postEx.png">
-                    </div>
-                    <div>
-                        <div class="flex-2">
-                            <div>
-                                <h1 class="no-m">TITRE</h1>
-                                <p class="muted no-m">DATE</p>
-                            </div>
-                            <div class="flex flex-c flex-m">
-                                <button class="btn green square"> WHAT ??</button>
+                <div class="p-10 m-10 bg-w flex-1 flex-m" v-if="post1">
+                    <a class="no-style" v-bind:href="'/postDetail-' + post1.id">
+                        <div>
+                            <img class="img-resp" v-bind:src="post1.imgSrc">
+                        </div>
+                        <div>
+                            <div class="flex-2">
+                                <div>
+                                    <h1 class="no-m">${ post1.title }</h1>
+                                    <p class="muted no-m">${ post1.prettyDate }</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="p-10 m-10 bg-w">
-                    <div>
-                        <img class="img-resp" src="assets/img/postEx.png">
-                    </div>
-                    <div>
-                        <div class="flex-2">
-                            <div>
-                                <h1 class="no-m">TITRE</h1>
-                                <p class="muted no-m">DATE</p>
-                            </div>
-                            <div class="flex flex-c flex-m">
-                                <button class="btn green square"> WHAT ??</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex-3 bg-lw brd-mc">
-                <p>
-                    Question
-                </p>
-                <p>
-                    Date
-                </p>
-                <div class="flex-2">
-                    <p>
-                        Etat
-                    </p>
-                    <div class="flex-2 flex-r flex-m">
-                        <button onclick="refreshLastPost()" class="tableLink">
-                            <i class="material-icons">
-                                refresh
-                            </i>
-                        </button>
-                        <a href="/addPost" class="tableLink">
-                            +
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <ul class="listPost brd-mc" v-if="posts">
-                <li v-for="post in posts">
-                    <a class="no-style flex-3" v-bind:href="'/postDetail-' + post.id">
-                        <h3>${ post.title }</h3>
-                        <h3>${ post.prettyDate }</h3>
-                        <h3>${ post.resolved }</h3>
                     </a>
-                </li>
-            </ul>
+                </div>
+                <div class="p-10 m-10 bg-w flex-1 flex-m" v-if="post2">
+                    <a class="no-style" v-bind:href="'/postDetail-' + post2.id">
+                        <div>
+                            <img class="img-resp" v-bind:src="post2.imgSrc">
+                        </div>
+                        <div>
+                            <div class="flex-2">
+                                <div>
+                                    <h1 class="no-m">${ post2.title }</h1>
+                                    <p class="muted no-m">${ post2.prettyDate }</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="p-10">
+                <div class="flex-3 bg-lw brd-mc">
+                    <p>
+                        Question
+                    </p>
+                    <p>
+                        Date
+                    </p>
+                    <div class="flex-2">
+                        <p>
+                            Etat
+                        </p>
+                        <div class="flex-2 flex-r flex-m">
+                            <button onclick="refreshLastPost()" class="tableLink">
+                                <i class="material-icons">
+                                    refresh
+                                </i>
+                            </button>
+                            <a href="/addPost" class="tableLink">
+                                +
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="listPost brd-mc" v-if="posts">
+                    <li v-for="post in posts">
+                        <a class="no-style flex-3" v-bind:href="'/postDetail-' + post.id">
+                            <h3>${ post.title }</h3>
+                            <h3>${ post.prettyDate }</h3>
+                            <h3>${ post.resolvedTXT }</h3>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -94,42 +99,51 @@
                 el: '#app',
                 delimiters: ['${', '}'],
                 data: {
-                    posts: null
+                    posts: null,
+                    post1: null,
+                    post2: null
                 }
             });
 
             getLastPost(function (err, status, data) {
                 if (status === 200) {
-                    data.forEach(function (item, index, array) {
-                        console.log(prettyDate(item.createdAt));
-                        data[index]['prettyDate'] = prettyDate(item.createdAt);
-                        if (item.resolved) {
-                            data[index]['resolved'] = "Résolu";
-                        } else {
-                            data[index]['resolved'] = "En Attente";
-                        }
-                    });
-                    app.posts = data;
+                    reworkPostData(data);
                 }
             });
         };
 
         function refreshLastPost() {
-            app.posts = null;
             getLastPost(function (err, status, data) {
                 if (status === 200) {
-                    data.forEach(function (item, index, array) {
-                        console.log(prettyDate(item.createdAt));
-                        data[index]['prettyDate'] = prettyDate(item.createdAt);
-                        if (item.resolved) {
-                            data[index]['resolved'] = "Résolu";
-                        } else {
-                            data[index]['resolved'] = "En Attente";
-                        }
-                    });
-                    app.posts = data;
+                    reworkPostData(data);
                 }
             });
+        }
+
+        function refreshLastPostWithFiltre(filtre) {
+            getLastPostFiltre(filtre, function (err, status, data) {
+                if (status === 200) {
+                    reworkPostData(data);
+                }
+            });
+        }
+
+        function reworkPostData(data) {
+            app.post1 = null;
+            app.post2 = null;
+            app.posts = null;
+            data.forEach(function (item, index, array) {
+                console.log(prettyDate(item.createdAt));
+                data[index]['prettyDate'] = prettyDate(item.createdAt);
+                if (item.resolved) {
+                    data[index]['resolvedTXT'] = "Résolu";
+                } else {
+                    data[index]['resolvedTXT'] = "En Attente";
+                }
+            });
+            app.post1 = data[0];
+            app.post2 = data[1];
+            app.posts = data.slice(2);
         }
     </script>
 {% endblock %}

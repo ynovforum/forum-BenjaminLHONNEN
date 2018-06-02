@@ -32,6 +32,13 @@ const Comment = db.define('comment', {
     idPost: {type: Sequelize.INTEGER},
     idUser: {type: Sequelize.INTEGER},
 });
+const Category = db.define('category', {
+    txt: {type: Sequelize.STRING},
+});
+const LinkPostCategory = db.define('linkpostcategory', {
+    idPost: {type: Sequelize.INTEGER},
+    idCategory: {type: Sequelize.INTEGER},
+});
 
 User.hasMany(Post, {foreignKey: 'idUser'});
 Post.belongsTo(User, {foreignKey: 'idUser'});
@@ -39,17 +46,33 @@ Post.belongsTo(User, {foreignKey: 'idUser'});
 Post.hasMany(Comment, {foreignKey: 'idPost'});
 Comment.belongsTo(Post, {foreignKey: 'idPost'});
 
+Post.hasMany(LinkPostCategory, {foreignKey: 'idPost'});
+LinkPostCategory.belongsTo(Post, {foreignKey: 'idPost'});
+
+Category.hasMany(LinkPostCategory, {foreignKey: 'idCategory'});
+LinkPostCategory.belongsTo(Category, {foreignKey: 'idCategory'});
+
 User.hasMany(Comment, {foreignKey: 'idUser'});
 Comment.belongsTo(User, {foreignKey: 'idUser'});
 
 User.sync();
 Comment.sync();
 Post.sync();
+Category.sync();
+LinkPostCategory.sync();
+
+User.sync();
+Comment.sync();
+Post.sync();
+Category.sync();
+LinkPostCategory.sync();
 
 
 module.exports = {
-    User: User,
-    Comment: Comment,
-    Post: Post,
-    db: db,
+    User,
+    Comment,
+    Post,
+    LinkPostCategory,
+    Category,
+    db,
 };

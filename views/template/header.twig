@@ -1,19 +1,26 @@
 <header>
-    <ul class="flex flex-c flex-m">
-        <li><a href="/">Accueil</a></li>
-        <li>
-            <a class="flex flex-c flex-m" href="#">
-                <img class="img-profile" src="/{{ user.imgSrc }}">
-                <span class="m-10">{{ user.pseudo }}</span>
-            </a>
-        </li>
-        <li><a href="/disconnect">Se Deconnecter</a></li>
-
-        {% if user.role == "admin" %}
-            <li>
-                <a href="/admin">dashboard</a>
+    <div class="flex-2">
+        <ul class="flex flex-l flex-m">
+            <li class="p-10">
+                <a href="/" class="flex flex-m">
+                    <img class="img-resp img-50w-50h" src="assets/img/paper-plane-header.png">
+                    <span class="p-10">Accueil</span>
+                </a>
             </li>
-        {% endif %}
-
-    </ul>
+            {% if user.role == "admin" %}
+                <li class="p-10">
+                    <a href="/admin">dashboard</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="flex flex-r flex-m">
+            <li class="p-10">
+                <a class="flex flex-c flex-m" href="#">
+                    <img class="img-profile" src="/{{ user.imgSrc }}">
+                    <span class="m-10">{{ user.pseudo }}</span>
+                </a>
+            </li>
+            <li class="p-10"><a href="/disconnect">Se Deconnecter</a></li>
+        </ul>
+    </div>
 </header>

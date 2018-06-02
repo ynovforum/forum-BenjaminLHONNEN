@@ -1,30 +1,42 @@
-.listPost{
+.listPost {
   list-style: none;
   margin: 0;
   padding: 0;
-  li{
+  li {
     background-color: #FFFFFF;
     border-bottom: 1px solid #EFF3F6;
     padding: $mainPadding;
   }
 }
 
-.postContent p{
+.postContent p {
   margin: 5px;
   padding: 0;
 }
-.postComments{
+
+.postComments {
   list-style: none;
 }
-.postComments > li{
+
+.postComments > li {
   padding-left: 25px;
   border-bottom: 1px solid $brd-color;
 }
-.postComments > li:last-child{
+
+.postComments > li:last-child {
   border: none;
 }
 
-.comment p{
+.comment {
+  display: block;
+  max-width: 100%;
+}
+
+.comment p {
   margin: 5px;
   padding: 0;
+}
+
+.comment * {
+  max-width: 100%;
 }

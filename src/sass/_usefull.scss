@@ -107,3 +107,9 @@ body main {
 .m-w-250{
   max-width: 250px;
 }
+
+.txt-pretty{
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}

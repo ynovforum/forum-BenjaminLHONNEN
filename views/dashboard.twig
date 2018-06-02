@@ -5,6 +5,37 @@
 {% block content %}
     <h1>Users : </h1>
     <ul class="userList">
+        <li>
+            <div class="flex-4 bg-lw brd-mc">
+                <p class="p-10 no-m">
+                    Question
+                </p>
+                <p class="p-10 no-m">
+                    Date
+                </p>
+                <p class="p-10 no-m">
+                    Etat
+                </p>
+                <p class="p-10 no-m">
+
+                </p>
+            </div>
+        </li>
+        {% for category in categories %}
+            <li class="bg-w">
+                <div class="flex-2">
+                    <p class="p-10 no-m">
+                        {{ category.txt }}
+                    </p>
+                    <p class="p-10 no-m">
+                        <a href="#"> Modifier </a>
+                    </p>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <h1>Users : </h1>
+    <ul class="userList">
         {% for item in users %}
             <li class="bg-w m-10">
                 <div class="flex-profile-50 p-10">
@@ -50,7 +81,7 @@
                                     {{ post.resolved }}
                                 </p>
                                 <p class="p-10 no-m">
-                                    <a href="#">Modifier</a>
+                                    <a href="../updatePost-{{ post.id }}">Modifier</a>
                                 </p>
                             </div>
                         </li>

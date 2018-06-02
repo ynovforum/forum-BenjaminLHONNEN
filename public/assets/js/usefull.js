@@ -47,6 +47,11 @@ function getLastPost(cb) {
         cb(err, status, data);
     });
 }
+function getLastPostFiltre(filtre,cb) {
+    getJSON("/api/get/post-"+filtre, function (err, status, data) {
+        cb(err, status, data);
+    });
+}
 
 function getCommentByIdPost(idPost, cb) {
     getJSON("/api/get/comment-" + idPost, function (err, status, data) {

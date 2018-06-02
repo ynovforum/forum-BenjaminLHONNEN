@@ -20,21 +20,21 @@
                 </div>
                 <div class="p-10 postContent">
                     <p>{{ post.content }}</p>
-                    <p class="muted">{{ post.category }}</p>
+                    <label class="categorie">{{ post.category }}</label>
                 </div>
             </div>
 
             <ul id="app" class="postComments p-10 m-10">
                 <li v-for="comment in comments">
-                    <div class="flex-profile">
+                    <div class="flex-profile-50">
                         <div class="m-10 flex flex-c">
-                            <img v-bind:src="comment.user.imgSrc" class="img-resp img-profile-100w-100h">
+                            <img v-bind:src="comment.user.imgSrc" class="img-resp img-profile-50w-50h">
                         </div>
                         <div class="m-10">
-                            <p>
-                                ${ comment.user.pseudo } | {{ comment.prettyDate }}
+                            <p class="no-p no-m">
+                                ${ comment.user.pseudo } | ${ comment.prettyDate }
                             </p>
-                            <p class="no-p no-m comment" v-bind:id="'comment-' + comment.id"
+                            <p class="no-p no-m comment txt-pretty" v-bind:id="'comment-' + comment.id"
                                v-html="comment.content"></p>
                             <p class="no-m no-p" v-if="comment.user.id === {{ user.id }}">
                                 <button class="btn blue"
@@ -61,6 +61,23 @@
         <div>
             <div class="m-10">
                 <div class="brd-mc">
+                    {% if post.user.id == user.id and post.resolved == false %}
+                        <div class="bg-w no-m brd-r-top no-m flex-1 brd-bot-mc p-10">
+                            <div class="flex">
+                                <a class="m-10" href="./updatePost-{{ post.id }}">
+                                    <i class="material-icons">
+                                        settings
+                                    </i>
+                                </a>
+                            </div>
+                            {% if post.resolved == false %}
+                            <button class="btn blue m-10 p-10 full" onclick="updateStatus()">
+                                Fermer la question
+                            </button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
                     <div class="bg-w no-m no-p brd-r-top">
                         <h2 class="p-10 no-m">Titre</h2>
                         <p class="p-10 no-m brd-bot-mc">
@@ -109,19 +126,27 @@
                 }
             });
             getCommentByIdPost({{ post.id }}, function (err, status, data) {
-                for(var y=0;y < data.length;y++){
+                for (var y = 0; y < data.length; y++) {
                     data[y]['prettyDate'] = prettyDate(data[y]['createdAt']);
                 }
                 app.comments = data;
             });
         };
 
+        function updateStatus() {
+            getResponse("/api/post/postResolved-{{ post.id }}", function (err, status, data) {
+                if (status === 200) {
+                    location.reload();
+                }
+            })
+        }
+
         function refreshComment() {
-            app.comments = null;
             getCommentByIdPost({{ post.id }}, function (err, status, data) {
-                for(var y=0;y < data.length;y++){
+                for (var y = 0; y < data.length; y++) {
                     data[y]['prettyDate'] = prettyDate(data[y]['createdAt']);
                 }
+                app.comments = null;
                 app.comments = data;
             });
         }

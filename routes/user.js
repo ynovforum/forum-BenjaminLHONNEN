@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-let {db, User, Post, Comment} = require('../DB');
+const {db, User, Comment, Post, Category, LinkPostCategory} = require('../DB');
 const passport = require('passport');
 const {saltRounds} = require('../const');
 const formidable = require('formidable');
@@ -9,11 +9,18 @@ const formidable = require('formidable');
 
 router.get('/addPost', (req, res) => {
     if (req.user !== undefined && req.user !== null) {
-        res.render('formAddPost', {user: req.user});
+        Category.sync()
+            .then(()=>{
+                return Category.findAll();
+            })
+            .then((categories)=>{
+                res.render('formAddPost', {user: req.user,categories});
+            });
     } else {
         res.redirect("/login");
     }
 });
+
 router.get('/postDetail-:idPost', (req, res) => {
     if (req.user !== undefined && req.user !== null) {
         Post
@@ -32,6 +39,69 @@ router.get('/postDetail-:idPost', (req, res) => {
             .then((post) => {
                 post['prettyDate'] = prettyDate(post['createdAt']);
                 res.render('postDetail', {post, user: req.user});
+            });
+    } else {
+        res.redirect("/login");
+    }
+});
+router.get('/updatePost-:idPost', (req, res) => {
+    if (req.user !== undefined && req.user !== null) {
+        Post
+            .sync()
+            .then(() => {
+                return Post.find({
+                    where: {
+                        id: req.params.idPost
+                    },
+                    include: [
+                        User,
+                        {model: Comment, include: User}
+                    ]
+                });
+            })
+            .then((post) => {
+                if (post.user.id === req.user.id) {
+                    post['prettyDate'] = prettyDate(post['createdAt']);
+                    res.render('updatePost', {post, user: req.user});
+                } else {
+                    res.render('postDetail', {post, user: req.user});
+                }
+            });
+    } else {
+        res.redirect("/login");
+    }
+});
+router.post('/updatePost-:idPost', (req, res) => {
+    if (req.user !== undefined && req.user !== null) {
+        Post
+            .sync()
+            .then(() => {
+                return Post.find({
+                    where: {
+                        id: req.params.idPost
+                    },
+                    include: [User]
+                });
+            })
+            .then((post) => {
+                if (post.user.id === req.user.id) {
+                    Post.sync()
+                        .then(() => {
+                            Post
+                                .update({
+                                    title: req.body.title,
+                                    content: req.body.content,
+                                    category: req.body.category,
+                                }, {
+                                    where: {id: req.params.idPost}
+                                })
+                                .then(() => {
+                                    res.redirect('postDetail-' + post.id);
+                                });
+                        });
+                } else {
+                    res.render('postDetail', {post, user: req.user});
+                }
             });
     } else {
         res.redirect("/login");
@@ -93,14 +163,16 @@ router.post('/register', (req, res) => {
                             console.log("file type: " + JSON.stringify(files.fileUploaded.type));
                             console.log("astModifiedDate: " + JSON.stringify(files.fileUploaded.lastModifiedDate));
 
-                            //Formidable changes the name of the uploaded file
-                            //Rename the file to its original name
-                            var timestamp = Date.now();
-                            fs.rename(files.fileUploaded.path, './public/assets/upload/img/' + timestamp + ".png", function (err) {
-                                if (err)
-                                    throw err;
-                                console.log('renamed complete');
-                            });
+                            var timestamp = "default";
+                            if(files.fileUploaded.size !== 0){
+                                timestamp = Date.now();
+                                fs.rename(files.fileUploaded.path, './public/assets/upload/img/' + timestamp + ".png", function (err) {
+                                    if (err)
+                                        throw err;
+                                    console.log('renamed complete');
+                                });
+                            }
+
                             bcrypt.hash(fields.password, saltRounds, function (err, hash) {
                                 User
                                     .sync()
@@ -158,7 +230,7 @@ function prettyDate(time) {
         (diff < 7200 && month_diff === 0) && "Il y a 1 heure" ||
         (diff < 86400 && month_diff === 0) && "Il y a " + Math.floor(diff / 3600) + " heures") ||
         (day_diff === 1 && month_diff === 0) && "Hier " ||
-        (day_diff < 7  && month_diff === 0) && "Il y a " + day_diff + " jours" ||
+        (day_diff < 7 && month_diff === 0) && "Il y a " + day_diff + " jours" ||
         (day_diff < 31 && month_diff === 0) && "Il y a " + Math.ceil(day_diff / 7) + " semaines" ||
         month_diff === 1 && "1 mois " ||
         month_diff > 0 && "Il y a " + month_diff + " mois";

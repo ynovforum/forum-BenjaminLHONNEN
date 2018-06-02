@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let {db, User, Post, Comment} = require('../DB');
+const {db, User, Comment, Post, Category, LinkPostCategory} = require('../DB');
 const bcrypt = require('bcrypt');
 const {saltRounds} = require('../const');
 
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
             .then((users) => {
                 for (var y = 0; y < users.length; y++) {
                     users[y]['prettyDate'] = prettyDate(users[y].createdAt);
-                    for(var x=0; x < users[y].posts.length;x++){
+                    for (var x = 0; x < users[y].posts.length; x++) {
                         users[y]['posts'][x]['prettyDate'] = prettyDate(users[y]['posts'][x].createdAt);
                         if (users[y]['posts'][x].resolved) {
                             users[y]['posts'][x]['resolved'] = "Résolu";
@@ -23,7 +23,16 @@ router.get('/', (req, res) => {
                         }
                     }
                 }
-                res.render("dashboard", {user: req.user, users});
+                return users;
+            })
+            .then((users) => {
+                Category.sync()
+                    .then(()=>{
+                        return Category.findAll();
+                    })
+                    .then((categories)=>{
+                        res.render('dashboard', {user: req.user, users,categories});
+                    });
             });
     } else {
         res.redirect("/");
@@ -33,13 +42,13 @@ router.get('/', (req, res) => {
 router.get('/updateUser-:idUser', (req, res) => {
     if (req.user.role === "admin") {
         User.sync()
-            .then(()=>{
+            .then(() => {
                 return User.find({
-                    where:{id:req.params.idUser}
+                    where: {id: req.params.idUser}
                 });
             })
-            .then((userUpdate)=>{
-                res.render("updateUser", {user: req.user,userUpdate});
+            .then((userUpdate) => {
+                res.render("updateUser", {user: req.user, userUpdate});
             });
     } else {
         res.redirect("/");
@@ -50,13 +59,14 @@ router.post('/updateUser-:idUser', (req, res) => {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
             User.sync()
                 .then(() => {
-                    if(req.body.password !== null && req.body.password !== undefined){
+                    if (req.body.password !== null && req.body.password !== undefined) {
                         User.update({
                             mail: req.body.userName,
                             password: hash,
                             pseudo: req.body.pseudo,
                             bio: req.body.bio,
-                        },{
+                            role: req.body.role,
+                        }, {
                             where: {
                                 id: req.params.idUser
                             }
@@ -66,7 +76,7 @@ router.post('/updateUser-:idUser', (req, res) => {
                             mail: req.body.userName,
                             pseudo: req.body.pseudo,
                             bio: req.body.bio,
-                        },{
+                        }, {
                             where: {
                                 id: req.params.idUser
                             }
@@ -74,7 +84,7 @@ router.post('/updateUser-:idUser', (req, res) => {
                     }
                 })
                 .then(() => {
-                    res.redirect("updateUser-"+req.params.idUser);
+                    res.redirect("updateUser-" + req.params.idUser);
                 });
         });
     } else {

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>{% block title %}{% endblock %} | Forum</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <script src="/assets/js/tinymce.min.js"></script>
     <link rel="icon" type="image/png" href="/assets/img/icon.png"/>
     <link rel="stylesheet" href="/assets/css/style.css"/>
+    <link rel="stylesheet" href="/assets/css/select-multiple.css"/>
 </head>
 <body>
 
@@ -16,7 +16,14 @@
 <main>
     {% block content %}{% endblock %}
 </main>
+
+
+<script src="/assets/js/tinymce.min.js"></script>
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/quicksearch.js"></script>
+<script src="/assets/js/jquery.select-multiple.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 <script src="/assets/js/usefull.js"></script>
 {% block script %}{% endblock %}
 </body>

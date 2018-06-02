@@ -19,10 +19,10 @@ html{
   background-color: $mc;
 }
 
+@import "button";
 @import "usefull";
 @import "typo";
 @import "input";
-@import "button";
 @import "anim";
 @import "checkbox";
 @import "header";
@@ -32,3 +32,4 @@ html{
 @import "login";
 @import "image";
 @import "ul";
+@import "cate";
