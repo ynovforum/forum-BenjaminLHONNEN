@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="be4ac5e4-5abd-4bd2-8bdd-7243a349cdf1" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sass/_ul.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/sass/_ul.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.twig" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/postDetail.twig" beforeDir="false" afterPath="$PROJECT_DIR$/views/postDetail.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/profile.twig" beforeDir="false" afterPath="$PROJECT_DIR$/views/profile.twig" afterDir="false" />
-    </list>
+    <list default="true" id="be4ac5e4-5abd-4bd2-8bdd-7243a349cdf1" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -20,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.twig" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/index.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
@@ -29,11 +23,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_ul.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sass/_ul.scss">
+      <file leaf-file-name="_anim.scss" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sass/_anim.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="37" column="9" selection-start-line="37" selection-start-column="3" selection-end-line="37" selection-end-column="9" />
+            <state relative-caret-position="340">
+              <caret line="47" column="12" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -73,7 +67,6 @@
         <option value="$PROJECT_DIR$/src/sass/_checkbox.scss" />
         <option value="$PROJECT_DIR$/src/sass/_input.scss" />
         <option value="$PROJECT_DIR$/views/styleGuide.twig" />
-        <option value="$PROJECT_DIR$/src/sass/_anim.scss" />
         <option value="$PROJECT_DIR$/src/sass/_login.scss" />
         <option value="$PROJECT_DIR$/src/sass/_file-input.scss" />
         <option value="$PROJECT_DIR$/views/login.twig" />
@@ -108,6 +101,7 @@
         <option value="$PROJECT_DIR$/views/profile.twig" />
         <option value="$PROJECT_DIR$/src/sass/_ul.scss" />
         <option value="$PROJECT_DIR$/views/index.twig" />
+        <option value="$PROJECT_DIR$/src/sass/_anim.scss" />
       </list>
     </option>
   </component>
@@ -224,18 +218,17 @@
       <workItem from="1527871653427" duration="162000" />
       <workItem from="1527921587049" duration="3318000" />
       <workItem from="1528028344877" duration="4984000" />
-      <workItem from="1528036527328" duration="5641000" />
+      <workItem from="1528036527328" duration="6384000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115934000" />
+    <option name="totallyTimeSpent" value="116677000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13965885" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13965885" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
@@ -244,7 +237,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32178771" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32178771" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -288,7 +281,6 @@
     <entry file="file://$PROJECT_DIR$/views/addPost.twig" />
     <entry file="file://$PROJECT_DIR$/routes/default.js" />
     <entry file="file://$PROJECT_DIR$/params.js" />
-    <entry file="file://$PROJECT_DIR$/src/sass/_anim.scss" />
     <entry file="file://$PROJECT_DIR$/views/styleGuide.twig" />
     <entry file="file://$PROJECT_DIR$/src/sass/_checkbox.scss" />
     <entry file="file://$PROJECT_DIR$/src/sass/_login.scss" />
@@ -568,6 +560,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sass/_anim.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="47" column="12" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="12" />
         </state>
       </provider>
     </entry>
