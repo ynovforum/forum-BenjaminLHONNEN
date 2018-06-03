@@ -5,7 +5,7 @@
 {% block content %}
 
     <div class="bg-w brd-mc">
-        {% if user.id == userUpdate.id %}
+        {% if user.id != userUpdate.id %}
             <h1>{{ userUpdate.pseudo }} Profile</h1>
         {% else %}
             <h1>Mon Profile</h1>

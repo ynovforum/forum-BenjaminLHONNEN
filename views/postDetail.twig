@@ -5,15 +5,17 @@
 {% block content %}
     <div class="flex-75-25 p-10 m-10">
         <div class="bg-w m-10 p-10 brd-r brd-mc">
-            <div class="flex-profile m-10">
-                <div>
-                    <img src="{{ post.user.imgSrc }}" class="img-resp img-profile-100w-100h">
+            <a class="no-style" href="/profile-{{ post.user.id }}">
+                <div class="flex-profile m-10">
+                    <div>
+                        <img src="{{ post.user.imgSrc }}" class="img-resp img-profile-100w-100h">
+                    </div>
+                    <div class="p-10">
+                        <h3 class="no-m no-p">{{ post.title }}</h3>
+                        <p class="no-m no-p">{{ post.user.pseudo }} | {{ post.prettyDate }}</p>
+                    </div>
                 </div>
-                <div class="p-10">
-                    <h3 class="no-m no-p">{{ post.title }}</h3>
-                    <p class="no-m no-p">{{ post.user.pseudo }} | {{ post.prettyDate }}</p>
-                </div>
-            </div>
+            </a>
             <div class="flex-25-75 brd-bot-mc">
                 <div class="p-10">
                     <img src="{{ post.imgSrc }}" class="img-resp">
@@ -73,9 +75,9 @@
                                 </a>
                             </div>
                             {% if post.resolved == false %}
-                            <button class="btn blue m-10 p-10 full" onclick="updateStatus()">
-                                Fermer la question
-                            </button>
+                                <button class="btn blue m-10 p-10 full" onclick="updateStatus()">
+                                    Fermer la question
+                                </button>
                             {% endif %}
                         </div>
                     {% endif %}
