@@ -1,6 +1,6 @@
 {% extends "base.twig" %}
 
-{% block title %}Update User {% endblock %}
+{% block title %}Profile {% endblock %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
         {% if user.id == userUpdate.id %}
             <h1>{{ userUpdate.pseudo }} Profile</h1>
         {% else %}
-            <h1>My Profile</h1>
+            <h1>Mon Profile</h1>
         {% endif %}
         <div class="p-10 flex-profile">
             <div class="input-field flex-1 flex-m flex-c">
