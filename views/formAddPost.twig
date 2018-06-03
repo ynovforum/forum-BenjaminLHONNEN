@@ -17,8 +17,7 @@
 
             <div class="input-field">
                 <label for="category">Category : </label>
-                <input class="full" id="category" type="text" name="category">
-                <input id="categoryBis" type="hidden" name="categoryBis">
+                <input id="category" type="hidden" name="category">
 
                 <select class="searchable" id='custom-headers' multiple='multiple'>
                     {% for category in categories %}
@@ -75,7 +74,7 @@
         };
 
         function submitCheck() {
-            document.getElementById("categoryBis").value = getSelectValues(document.getElementById("custom-headers"));
+            document.getElementById("category").value = getSelectValues(document.getElementById("custom-headers"));
             return true;
         }
 

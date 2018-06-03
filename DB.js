@@ -21,7 +21,6 @@ const User = db.define('user', {
 const Post = db.define('post', {
     title: {type: Sequelize.STRING},
     content: {type: Sequelize.TEXT},
-    category: {type: Sequelize.STRING},
     imgSrc: {type: Sequelize.STRING},
     idUser: {type: Sequelize.INTEGER},
     resolved: {type: Sequelize.BOOLEAN},

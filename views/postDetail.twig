@@ -20,7 +20,9 @@
                 </div>
                 <div class="p-10 postContent">
                     <p>{{ post.content }}</p>
-                    <label class="categorie">{{ post.category }}</label>
+                    {% for category in categories %}
+                        <label class="categorie">{{ category.category.txt }}</label>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -61,7 +63,7 @@
         <div>
             <div class="m-10">
                 <div class="brd-mc">
-                    {% if post.user.id == user.id and post.resolved == false %}
+                    {% if post.user.id == user.id %}
                         <div class="bg-w no-m brd-r-top no-m flex-1 brd-bot-mc p-10">
                             <div class="flex">
                                 <a class="m-10" href="./updatePost-{{ post.id }}">

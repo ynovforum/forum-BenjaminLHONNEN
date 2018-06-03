@@ -1,6 +1,6 @@
 {% extends "base.twig" %}
 
-{% block title %}Update User {% endblock %}
+{% block title %} Modifier {% endblock %}
 
 {% block content %}
 
@@ -14,21 +14,23 @@
             <div class="input-field">
                 <label class="muted">Email </label>
                 <input class="full" placeholder="Email" type="email" name="userName" required
-                       value="{{ userUpdate.email }}">
+                       value="{{ userUpdate.mail }}">
             </div>
             <div class="input-field">
                 <label class="muted">Mot de Passe </label>
                 <input class="full" placeholder="Mot de Passe" type="password" name="password" required
                        value="">
             </div>
-            <div class="input-field">
-                <label class="muted">Role </label>
-                <select name="role">
-                    <option value="{{ userUpdate.role }}" disabled>{{ userUpdate.role }}</option>
-                    <option value="admin">admin</option>
-                    <option value="default">default</option>
-                </select>
-            </div>
+            {% if user.role == 'admin' %}
+                <div class="input-field">
+                    <label class="muted">Role </label>
+                    <select name="role">
+                        <option value="{{ userUpdate.role }}" disabled>{{ userUpdate.role }}</option>
+                        <option value="admin">admin</option>
+                        <option value="default">default</option>
+                    </select>
+                </div>
+            {% endif %}
             <div class="input-field">
                 <label class="muted">Bio </label>
                 <textarea name="bio">{{ userUpdate.bio }}</textarea>

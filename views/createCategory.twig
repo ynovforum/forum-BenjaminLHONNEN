@@ -1,0 +1,18 @@
+{% extends "base.twig" %}
+
+{% block title %}Ajout Catégorie{% endblock %}
+
+{% block content %}
+    <div class="m-10 p-10 bg-w brd-mc">
+        <form method="post">
+            <div class="input-field">
+                <label for="txt">Title : </label>
+                <input class="full" type="text" name="txt" id="txt">
+            </div>
+
+            <div class="input-field flex flex-m flex-c">
+                <button class="btn blue">Envoyer</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

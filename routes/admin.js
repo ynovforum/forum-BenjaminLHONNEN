@@ -3,6 +3,34 @@ const {db, User, Comment, Post, Category, LinkPostCategory} = require('../DB');
 const bcrypt = require('bcrypt');
 const {saltRounds} = require('../const');
 
+
+router.get('/deleteCategory-:idCategory', (req, res) => {
+    if (req.user.role === "admin") {
+        Category.destroy({where:{id:req.params.idCategory}});
+        LinkPostCategory.destroy({where:{idCategory:req.params.idCategory}});
+        res.redirect('/admin')
+    }
+});
+router.get('/createCategory', (req, res) => {
+    if (req.user.role === "admin") {
+        res.render('createCategory', {user: req.user});
+    }
+});
+
+router.post('/createCategory', (req, res) => {
+    if (req.user.role === "admin") {
+        Category.sync()
+            .then(() => {
+                Category.create({
+                    txt: req.body.txt
+                });
+            })
+            .then(() => {
+                res.redirect('/admin')
+            });
+    }
+});
+
 router.get('/', (req, res) => {
     if (req.user.role === "admin") {
         User.sync()
@@ -27,11 +55,11 @@ router.get('/', (req, res) => {
             })
             .then((users) => {
                 Category.sync()
-                    .then(()=>{
+                    .then(() => {
                         return Category.findAll();
                     })
-                    .then((categories)=>{
-                        res.render('dashboard', {user: req.user, users,categories});
+                    .then((categories) => {
+                        res.render('dashboard', {user: req.user, users, categories});
                     });
             });
     } else {
@@ -39,58 +67,6 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get('/updateUser-:idUser', (req, res) => {
-    if (req.user.role === "admin") {
-        User.sync()
-            .then(() => {
-                return User.find({
-                    where: {id: req.params.idUser}
-                });
-            })
-            .then((userUpdate) => {
-                res.render("updateUser", {user: req.user, userUpdate});
-            });
-    } else {
-        res.redirect("/");
-    }
-});
-router.post('/updateUser-:idUser', (req, res) => {
-    if (req.user.role === "admin") {
-        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-            User.sync()
-                .then(() => {
-                    if (req.body.password !== null && req.body.password !== undefined) {
-                        User.update({
-                            mail: req.body.userName,
-                            password: hash,
-                            pseudo: req.body.pseudo,
-                            bio: req.body.bio,
-                            role: req.body.role,
-                        }, {
-                            where: {
-                                id: req.params.idUser
-                            }
-                        });
-                    } else {
-                        User.update({
-                            mail: req.body.userName,
-                            pseudo: req.body.pseudo,
-                            bio: req.body.bio,
-                        }, {
-                            where: {
-                                id: req.params.idUser
-                            }
-                        });
-                    }
-                })
-                .then(() => {
-                    res.redirect("updateUser-" + req.params.idUser);
-                });
-        });
-    } else {
-        res.redirect("/");
-    }
-});
 
 function prettyDate(time) {
     var date = new Date(time),

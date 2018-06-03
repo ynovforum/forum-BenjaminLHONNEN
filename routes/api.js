@@ -128,14 +128,12 @@ router.post('/post/post', (req, res) => {
             .create({
                 title: fields.title,
                 content: fields.content,
-                category: fields.category,
                 imgSrc: './assets/upload/img/' + timestamp + '.png',
                 resolved: false,
                 idUser: req.user.id,
             })
             .then((post)=>{
-                console.log("categoryBis : ", fields.categoryBis);
-                let categories = fields.categoryBis.split(',');
+                let categories = fields.category.split(',');
                 for(let y=0; y < categories.length;y++){
                     if(categories[y]){
                         LinkPostCategory.create({

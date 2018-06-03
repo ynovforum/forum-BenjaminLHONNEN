@@ -1,20 +1,20 @@
 .userList > li{
   border-radius: $brd-rad;
 }
-.userList > li:nth-child(1n){
+.userList > li:nth-child(1n),.categorieList > li:nth-child(1n){
   border-left: 4px solid $ul-blue;
 }
-.userList > li:nth-child(2n){
+.userList > li:nth-child(2n),.categorieList > li:nth-child(2n){
   border-left: 4px solid $ul-red;
 }
-.userList > li:nth-child(3n){
+.userList > li:nth-child(3n),.categorieList > li:nth-child(3n){
   border-left: 4px solid $ul-green;
 }
-.userList > li:nth-child(4n){
+.userList > li:nth-child(4n),.categorieList > li:nth-child(4n){
   border-left: 4px solid $ul-yellow;
 }
 
-.userPostList,.userList{
+.userPostList,.userList,.categorieList{
   list-style: none;
 }
 

@@ -21,6 +21,76 @@ router.get('/addPost', (req, res) => {
     }
 });
 
+
+router.get('/profile-:idUser', (req, res) => {
+    if (req.user !== undefined && req.user !== null) {
+        User.sync()
+            .then(() => {
+                return User.find({
+                    where: {id: req.params.idUser}
+                });
+            })
+            .then((userUpdate) => {
+                res.render("profile", {user: req.user, userUpdate});
+            });
+    } else {
+        res.redirect("/");
+    }
+});
+
+router.get('/updateUser-:idUser', (req, res) => {
+    if (req.user !== undefined && req.user !== null) {
+        User.sync()
+            .then(() => {
+                return User.find({
+                    where: {id: req.params.idUser}
+                });
+            })
+            .then((userUpdate) => {
+                res.render("updateUser", {user: req.user, userUpdate});
+            });
+    } else {
+        res.redirect("/");
+    }
+});
+router.post('/updateUser-:idUser', (req, res) => {
+    if (req.user !== undefined && req.user !== null) {
+        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+            User.sync()
+                .then(() => {
+                    if (req.body.password !== null && req.body.password !== undefined && req.user.role === 'admin') {
+                        User.update({
+                            mail: req.body.userName,
+                            password: hash,
+                            pseudo: req.body.pseudo,
+                            bio: req.body.bio,
+                            role: req.body.role,
+                        }, {
+                            where: {
+                                id: req.params.idUser
+                            }
+                        });
+                    } else {
+                        User.update({
+                            mail: req.body.userName,
+                            pseudo: req.body.pseudo,
+                            bio: req.body.bio,
+                        }, {
+                            where: {
+                                id: req.params.idUser
+                            }
+                        });
+                    }
+                })
+                .then(() => {
+                    res.redirect("updateUser-" + req.params.idUser);
+                });
+        });
+    } else {
+        res.redirect("/");
+    }
+});
+
 router.get('/postDetail-:idPost', (req, res) => {
     if (req.user !== undefined && req.user !== null) {
         Post
@@ -28,7 +98,7 @@ router.get('/postDetail-:idPost', (req, res) => {
             .then(() => {
                 return Post.find({
                     where: {
-                        id: req.params.idPost
+                        id: req.params.idPost,
                     },
                     include: [
                         User,
@@ -37,9 +107,15 @@ router.get('/postDetail-:idPost', (req, res) => {
                 });
             })
             .then((post) => {
-                post['prettyDate'] = prettyDate(post['createdAt']);
-                res.render('postDetail', {post, user: req.user});
-            });
+                LinkPostCategory.findAll({
+                    where:{idPost:post.id},
+                    include:[Category]
+                }).then((categories)=>{
+                    console.log(categories);
+                    post['prettyDate'] = prettyDate(post['createdAt']);
+                    res.render('postDetail', {post,categories, user: req.user});
+                });
+            })
     } else {
         res.redirect("/login");
     }
@@ -57,15 +133,20 @@ router.get('/updatePost-:idPost', (req, res) => {
                         User,
                         {model: Comment, include: User}
                     ]
+                }).then((post)=>{
+                    Category.sync()
+                        .then(()=>{
+                            return Category.findAll();
+                        })
+                        .then((categories) => {
+                            if (post.user.id === req.user.id) {
+                                post['prettyDate'] = prettyDate(post['createdAt']);
+                                res.render('updatePost', {post,categories, user: req.user});
+                            } else {
+                                res.render('postDetail', {post, user: req.user});
+                            }
+                        });
                 });
-            })
-            .then((post) => {
-                if (post.user.id === req.user.id) {
-                    post['prettyDate'] = prettyDate(post['createdAt']);
-                    res.render('updatePost', {post, user: req.user});
-                } else {
-                    res.render('postDetail', {post, user: req.user});
-                }
             });
     } else {
         res.redirect("/login");
@@ -91,13 +172,24 @@ router.post('/updatePost-:idPost', (req, res) => {
                                 .update({
                                     title: req.body.title,
                                     content: req.body.content,
-                                    category: req.body.category,
                                 }, {
                                     where: {id: req.params.idPost}
                                 })
                                 .then(() => {
                                     res.redirect('postDetail-' + post.id);
                                 });
+                            LinkPostCategory.destroy({where:{idPost:post.id}});
+                            let categories = req.body.category.split(',');
+                            console.log(categories);
+                            console.log(req.body.category);
+                            for(let y=0; y < categories.length;y++){
+                                if(categories[y]){
+                                    LinkPostCategory.create({
+                                        idPost:post.id,
+                                        idCategory:categories[y],
+                                    });
+                                }
+                            }
                         });
                 } else {
                     res.render('postDetail', {post, user: req.user});

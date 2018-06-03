@@ -3,24 +3,12 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Users : </h1>
-    <ul class="userList">
-        <li>
-            <div class="flex-4 bg-lw brd-mc">
-                <p class="p-10 no-m">
-                    Question
-                </p>
-                <p class="p-10 no-m">
-                    Date
-                </p>
-                <p class="p-10 no-m">
-                    Etat
-                </p>
-                <p class="p-10 no-m">
-
-                </p>
-            </div>
-        </li>
+    <h1>Catégories : </h1>
+    <div class="no-m flex-2">
+        <p> Nom de la catégorie </p>
+        <p><a href="./admin/createCategory"> Ajouter une catégorie </a></p>
+    </div>
+    <ul class="categorieList no-m">
         {% for category in categories %}
             <li class="bg-w">
                 <div class="flex-2">
@@ -28,7 +16,7 @@
                         {{ category.txt }}
                     </p>
                     <p class="p-10 no-m">
-                        <a href="#"> Modifier </a>
+                        <a href="./admin/deleteCategory-{{ category.id }}"> Supprimer </a>
                     </p>
                 </div>
             </li>
